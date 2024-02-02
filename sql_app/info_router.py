@@ -27,16 +27,17 @@ def add_info_to_database(info: str):
 # @router.post("/infosql", response_model=schemas.DeviceInfo)
 #TODO: cambiar codigo de respuesta HTTP de OK a CREATED
 # def info(infoFromDevice : schemas.DeviceInfoCreated, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
-@router.post("/infosql")
-def save_info(infoFromDevice : schemas.DeviceInfoCreated, background_tasks: BackgroundTasks, db: db_dependency):
-    background_tasks.add_task(add_info_to_database, info="información adicional")
-    #TODO: enviar a una clase que se encargue de recibir el bundle y el luego lo separe en varios elementos al finalizar hacer el commit a la base de datos
-    device_info_db = crud.create_device_info(db, infoFromDevice)
-    return infoFromDevice
+# @router.post("/infosql")
+# def save_info(infoFromDevice : schemas.DeviceInfoCreated, background_tasks: BackgroundTasks, db: db_dependency):
+#     background_tasks.add_task(add_info_to_database, info="información adicional")
+#     #TODO: enviar a una clase que se encargue de recibir el bundle y el luego lo separe en varios elementos al finalizar hacer el commit a la base de datos
+#     device_info_db = crud.create_device_info(db, infoFromDevice)
+#     return infoFromDevice
 
 
-@router.post("/info")
+@router.post("/")
 async def save_info(infoBundle : schemas.InfoBundleCreated, background_tasks: BackgroundTasks, db: db_dependency):
+    print('config info')
     # background_tasks.add_task(add_info_to_database, info="información adicional")
     crud.save_info_bundle(db, infoBundle)
     return None

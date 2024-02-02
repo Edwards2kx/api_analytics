@@ -6,22 +6,18 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List
 #internal imports
-from routers import config_info , analytic_info
+from routers import config_info , pdf_generator ,analytic_info
 from sql_app import info_router
+
 
 # from sql_app import main
 
 app = FastAPI()
 
 # routers
-# app.include_router(config_info.router)
-# app.include_router(analytic_info.router)
+app.include_router(config_info.router)
 app.include_router(info_router.router)
-
-@app.get("/")
-async def root():
-    return {"info": "API de analitica, ve a /docs para ver la documentación"}
-
+app.include_router(pdf_generator.router)
 
 # *modelo de informacion recibida
 

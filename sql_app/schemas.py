@@ -4,6 +4,7 @@ from typing import List, Union
 
 #Device Info class
 class DeviceInfoBase(BaseModel):
+    device_id: str
     operative_system:str
     so_version:str
     manufacturer:str
@@ -11,7 +12,6 @@ class DeviceInfoBase(BaseModel):
     cpu:str
     is_physical_device:bool
     ram_size:int
-    identifier: str
     total_storage: Union[float , None]
     free_storage:Union[float , None]
 
@@ -44,7 +44,6 @@ class Location(LocationBase):
     class Config:
         orm_mode = True
 
-
 class WifiNetworkItemBase(BaseModel):
     ssid : str
     bssid : str
@@ -62,34 +61,42 @@ class WifiNetworkItem(WifiNetworkItemBase):
     class Config:
         orm_mode = True
 
-# class Location(BaseModel):
-#     latitute: float
-#     longitude : float
-#     altitude : float
-#     is_mocked : bool
-#     time_stamp : datetime 
-#     country : str
-#     administrative_area : str
-#     locality : str
+class Location(BaseModel):
+    latitute: float
+    longitude : float
+    altitude : float
+    is_mocked : bool
+    time_stamp : datetime 
+    country : str
+    administrative_area : str
+    locality : str
     
-# class InstalledAppItem(BaseModel):
-#     app_name : str
-#     package_name : str
-#     version_name : str
+class FinancialServiceAppItem(BaseModel):
+    app_name : Union[str, None]
+    package_name : str
+
+class ConnectedDeviceItem(BaseModel):
+    uuid : str
+    name : Union[str, None]
         
-    
 class UserData(BaseModel):
     device_data : DeviceInfoCreated
-    location : LocationCreated
-    wifi_network_list : List[WifiNetworkItemCreated]
-    network_type : str
-    # bt_device_list : List[str]
-    # installed_app_list : List[InstalledAppItem]
+    location : Union[LocationCreated , None]
+    wifi_network_list : Union[List[WifiNetworkItemCreated] , None] 
+    network_type : Union [str , None] 
+    connected_devices_list : Union[List[ConnectedDeviceItem], None] 
+    installed_app_list : Union[List[FinancialServiceAppItem], None] 
+
+#   'location': location?.toMap(),
+#       'wifi_network_list': wifiNetworkList?.map((x) => x.toMap()).toList(),
+#       'device_data': deviceData?.toMap(),
+#       'network_type': networkType,
+#       'bt_device_list' : btDeviceInfoList?.map((x) => x.toMap()).toList(),
+#       'connected_devices_list' : installedAppList?.map((x) => x.toMap()).toList(),
 
 class InfoBundleBase(BaseModel):
     unique_id : str
     user_data: UserData
-
 
 class InfoBundleCreated(InfoBundleBase):
     pass
